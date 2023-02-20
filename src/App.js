@@ -24,7 +24,9 @@ const reducer = (state, action) => {
       //타겟아이디는 어디로 주나? ->인자로 주겠지.
     }
     case "EDIT": {
-      newState = state.map((it) => (it.data.id ? { ...action.data } : it));
+      newState = state.map((it) =>
+        it.id === action.data.id ? { ...action.data } : it
+      );
       break;
     }
     default:
@@ -62,13 +64,19 @@ const dummyData = [
     content: "오늘의 일기 4번",
     date: 1675868679634,
   },
+  {
+    id: 5,
+    emotion: 5,
+    content: "오늘의 일기 5번",
+    date: 1675868679635,
+  },
 ];
 
 function App() {
   const [data, dispatch] = useReducer(reducer, dummyData);
 
   console.log(new Date().getTime());
-  const dataId = useRef(0);
+  const dataId = useRef(6);
   const onCreate = (date, content, emotion) => {
     dispatch({
       type: "CREATE",
@@ -87,9 +95,9 @@ function App() {
   const onEdit = (targetId, date, content, emotion) => {
     dispatch({
       type: "EDIT",
-      datae: {
+      data: {
         id: targetId,
-        data: new Date(date).getTime(),
+        date: new Date(date).getTime(),
         content,
         emotion,
       },
@@ -109,7 +117,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/new" element={<New />} />
-              <Route path="/edit" element={<Edit />} />
+              <Route path="/edit/:id" element={<Edit />} />
               <Route path="/diary/:id" element={<Diary />} />
             </Routes>
           </div>

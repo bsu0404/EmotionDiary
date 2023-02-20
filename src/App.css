@@ -200,3 +200,90 @@ header button {
   font-family: "Nanum Pen Script";
   font-size: 20px;
 }
+.DiaryEditor .emotion_list_wrapper {
+  display: grid;
+  grid-template-columns: repeat(5, auto);
+  gap: 2%;
+}
+
+.DiaryEditor textarea {
+  font-family: "Nanum Pen Script";
+  font-size: 20px;
+
+  box-sizing: border-box;
+  /* 
+  해당 컴포넌트가 부모태그 안에서만 작동
+  ex) 패딩이나 width
+   */
+  width: 100%;
+
+  min-height: 200px;
+  resize: vertical;
+  /* 가로로 늘리는것 방지 */
+  border: none;
+  border-radius: 5px;
+  background-color: #ececec;
+
+  padding: 20px;
+}
+
+.DiaryEditor .control_box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+/* EmotionItem */
+
+.EmotionItem {
+  cursor: pointer;
+
+  border-radius: 5px;
+  padding: 20px 0px;
+
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+  /* ->축의 방향*/
+
+  align-items: center;
+  /* ->축의 수직 방향 */
+}
+.EmotionItem img {
+  width: 50%;
+  margin-bottom: 10px;
+}
+.EmotionItem span {
+  font-size: 18px;
+}
+.EmotionItem_off {
+  background-color: #ececec;
+}
+/* 
+  className={[
+     "EmotionItem",
+      isSelected ? `EmotionItem_on_${emotion_id}` : `EmotionItem_off`,
+  ].join(" ")}
+  */
+
+.EmotionItem_on_1 {
+  background-color: #64c964;
+  color: white;
+}
+.EmotionItem_on_2 {
+  background-color: #9dd772;
+  color: white;
+}
+.EmotionItem_on_3 {
+  color: white;
+
+  background-color: #fdce17;
+}
+.EmotionItem_on_4 {
+  color: white;
+  background-color: #fd8446;
+}
+.EmotionItem_on_5 {
+  color: white;
+  background-color: #fd565f;
+}
