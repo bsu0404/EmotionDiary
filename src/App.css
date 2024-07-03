@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&family=Yeon+Sung&display=swap");
+
 body {
   background-color: #f6f6f6;
   display: flex;
@@ -211,10 +212,7 @@ header button {
   font-size: 20px;
 
   box-sizing: border-box;
-  /* 
-  해당 컴포넌트가 부모태그 안에서만 작동
-  ex) 패딩이나 width
-   */
+
   width: 100%;
 
   min-height: 200px;
@@ -259,12 +257,6 @@ header button {
 .EmotionItem_off {
   background-color: #ececec;
 }
-/* 
-  className={[
-     "EmotionItem",
-      isSelected ? `EmotionItem_on_${emotion_id}` : `EmotionItem_off`,
-  ].join(" ")}
-  */
 
 .EmotionItem_on_1 {
   background-color: #64c964;

@@ -1,7 +1,6 @@
 import { emotionList } from "../util/emotion";
 
 const Viewer = ({ emotion, content }) => {
-  const emotionId = 1;
   return (
     <div className="Viewer">
       <section className="img_section">
@@ -11,6 +10,7 @@ const Viewer = ({ emotion, content }) => {
           <div>{emotionList[emotion - 1].emotion_descript}</div>
         </div>
       </section>
+
       <section className="content_section">
         <h4>오늘의 일기</h4>
         <div className="content_wrapper">

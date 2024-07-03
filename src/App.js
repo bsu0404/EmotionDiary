@@ -24,7 +24,6 @@ const reducer = (state, action) => {
       );
       console.log("id", action.targetId);
       break;
-      //타겟아이디는 어디로 주나? ->인자로 주겠지.
     }
     case "EDIT": {
       newState = state.map((it) =>
@@ -88,10 +87,10 @@ function App() {
       },
     });
   };
-  const onRemove = (targetId) => {
+  const OnDelete = (targetId) => {
     dispatch({ type: "REMOVE", targetId });
   };
-  const onEdit = (targetId, date, content, emotion) => {
+  const onUpdate = (targetId, date, content, emotion) => {
     dispatch({
       type: "EDIT",
       data: {
@@ -111,8 +110,8 @@ function App() {
       <DiaryDispatchContext.Provider
         value={{
           onCreate,
-          onEdit,
-          onRemove,
+          onUpdate,
+          OnDelete,
         }}
       >
         <BrowserRouter>
@@ -129,8 +128,5 @@ function App() {
     </DiaryStateContext.Provider>
   );
 }
-
-//variable: 별도의 매핑 필요
-//query string: 별도의 매필 필요 x
 
 export default App;

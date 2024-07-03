@@ -23,24 +23,18 @@ const Home = () => {
         pivotDate.getMonth(),
         1
       ).getTime();
-      //년 해당월 1일 의미함
+      //년 해당월 1일
       const lastDay = new Date(
         pivotDate.getFullYear(),
         pivotDate.getMonth() + 1,
         0
       ).getTime();
-      //년 다음 월 1일 전
 
       setData(
         diaryList.filter((it) => firstDay <= it.date && it.date < lastDay)
-      ); //useContext로 받아온 DiaryList에서 뽑아서 data에 저장
+      );
     }
   }, [diaryList, pivotDate]);
-
-  //1. 수정 삭제 2. pivitDate가 변화하는 순간(월을 바꾼 경우)
-  useEffect(() => {
-    console.log(data);
-  }, [data]); //
 
   const increaseMonth = () => {
     setPivitDate(
@@ -61,6 +55,7 @@ const Home = () => {
       )
     );
   };
+
   return (
     <div>
       <MyHeader

@@ -10,9 +10,8 @@ import useDiary from "../hooks/useDiary";
 
 const Diary = () => {
   const { id } = useParams();
-  const navigate = useNavigate();
-
   const currentData = useDiary(id);
+  const navigate = useNavigate();
 
   if (!currentData) {
     return <div>로딩중...</div>;

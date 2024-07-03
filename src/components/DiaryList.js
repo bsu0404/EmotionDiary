@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 import DiaryItem from "./DiaryItem";
 import MyButton from "./MyButton";
 
@@ -12,6 +13,7 @@ const filterOptionList = [
   { value: "good", name: "좋은 감정" },
   { value: "bad", name: "안좋은 감정" },
 ];
+
 const ControlMenu = ({ value, onChange, optionList }) => {
   return (
     //props: sortType, setSortType,sortOptionList
@@ -31,7 +33,6 @@ const ControlMenu = ({ value, onChange, optionList }) => {
 };
 
 const DiaryList = ({ diaryList }) => {
-  //현재 월에 해당하는 일기를 받아옴
   const navigate = useNavigate();
 
   const [sortType, setSortType] = useState("latest");
