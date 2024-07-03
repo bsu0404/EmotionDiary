@@ -1,146 +1,103 @@
 import { useNavigate } from "react-router-dom";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useState, useEffect } from "react";
 
-import MyHeader from "./MyHeader";
 import MyButton from "./MyButton";
 import EmotionItem from "./EmotionItem";
-import { DiaryDispatchContext } from "../App";
 
 import { getStringDate } from "../util/date";
+import { emotionList } from "../util/emotion";
 
-const env = process.env;
-env.PUBLIC_URL = env.PUBLIC_URL || "";
-
-const emotionList = [
-  {
-    emotion_id: 1,
-    emotion_img: process.env.PUBLIC_URL + `assets/emotion1.png`,
-    emotion_descript: "완전 좋음",
-  },
-  {
-    emotion_id: 2,
-    emotion_img: process.env.PUBLIC_URL + `assets/emotion2.png`,
-    emotion_descript: "좋음",
-  },
-  {
-    emotion_id: 3,
-    emotion_img: process.env.PUBLIC_URL + `assets/emotion3.png`,
-    emotion_descript: "그럭저럭",
-  },
-  {
-    emotion_id: 4,
-    emotion_img: process.env.PUBLIC_URL + `assets/emotion4.png`,
-    emotion_descript: "나쁨",
-  },
-  {
-    emotion_id: 5,
-    emotion_img: process.env.PUBLIC_URL + `assets/emotion5.png`,
-    emotion_descript: "아주 나쁨",
-  },
-];
-
-const DiaryEditor = ({ isEdit, originData }) => {
+const DiaryEditor = ({ initData, onSubmit }) => {
   const navigate = useNavigate();
-  const contentRef = useRef();
-  const { onCreate, onEdit } = useContext(DiaryDispatchContext);
 
-  const [date, setDate] = useState(getStringDate(new Date()));
-  const [emotion, setEmotion] = useState(3);
-  const [content, setContent] = useState("");
+  const [input, setInput] = useState({
+    date: new Date(),
+    emotion: 3,
+    content: "",
+  });
 
-  const handleClickEmote = (emotion) => {
-    setEmotion(emotion);
-  };
-
-  const handleSubmit = () => {
-    if (content.length < 1) {
-      contentRef.current.focus();
-      return;
-    }
-    if (
-      window.confirm(
-        isEdit ? "일기를 수정하시겠습니까?" : "새로운 일기를 저장하시겠습니까?"
-      )
-    ) {
-      if (!isEdit) {
-        onCreate(date, content, emotion);
-      } else {
-        onEdit(originData.id, date, content, emotion);
-      }
-    }
-    alert("저장되었습니다.");
-    navigate("/");
-  };
   useEffect(() => {
-    console.log("날짜는" + originData.date);
-
-    if (isEdit) {
-      setDate(getStringDate(new Date(parseInt(originData.date))));
-      setEmotion(originData.emotion);
-      setContent(originData.content);
+    if (initData) {
+      setInput({
+        ...initData,
+        createdDate: new Date(Number(initData.createdDate)),
+      });
     }
-  }, [isEdit, originData]);
+  }, [initData]);
+
+  const onChangeInput = (e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+
+    if (name === "date") {
+      value = new Date(value);
+    }
+    setInput({
+      ...input,
+      [name]: value,
+    });
+  };
+
+  const onClickSubmitButton = () => {
+    console.log(input, "DiaryEditor");
+    onSubmit(input);
+  };
 
   return (
     <div className="DiaryEditor">
-      <MyHeader
-        headText={isEdit ? "일기 수정하기" : "새 일기쓰기"}
-        leftChild={
-          <MyButton
-            text={"< 뒤로 가기"}
-            onClick={() => {
-              navigate(-1);
-            }}
+      <section className="date_section">
+        <h4>오늘의 날짜</h4>
+        <div className="input-box">
+          <input
+            className="input_date"
+            name="date"
+            type="date"
+            onChange={onChangeInput}
+            value={getStringDate(input.date)}
           />
-        }
-      />
-      <div>
-        <section>
-          <h4> 오늘은 언제인가요??</h4>
-          <div className="input-box">
-            <input
-              className="input_date"
-              type="date"
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
+        </div>
+      </section>
+      <section className="emotion_section">
+        <h4>오늘의 감정</h4>
+        <div className="input_box emotion_list_wrapper">
+          {emotionList.map((it) => (
+            <EmotionItem
+              key={it.emotion_id}
+              {...it}
+              onClick={() => {
+                onChangeInput({
+                  target: {
+                    name: "emotion",
+                    value: it.emotion_id,
+                  },
+                });
+              }}
+              isSelected={parseInt(it.emotion_id) === parseInt(input.emotion)}
             />
-          </div>
-        </section>
-        <section>
-          <h4>오늘의 감정</h4>
-          <div className="input_box emotion_list_wrapper">
-            {emotionList.map((it) => (
-              <EmotionItem
-                key={it.emotion_id}
-                {...it}
-                onClick={handleClickEmote}
-                isSelected={it.emotion_id === emotion}
-              />
-            ))}
-          </div>
-        </section>
-        <section>
-          <h4>오늘의 일기</h4>
-          <div className="input_box_text_wrapper">
-            <textarea
-              placeholder="오늘의 일기를 작성해보세요"
-              ref={contentRef}
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-            />
-          </div>
-        </section>
-        <section>
-          <div className="control_box">
-            <MyButton text={"취소하기"} onClick={() => navigate(-1)} />
-            <MyButton
-              text={"작성 완료"}
-              type={"positive"}
-              onClick={handleSubmit}
-            />
-          </div>
-        </section>
-      </div>
+          ))}
+        </div>
+      </section>
+      <section>
+        <h4>오늘의 일기</h4>
+        <div className="input_box_text_wrapper">
+          <textarea
+            name="content"
+            placeholder="오늘의 일기를 작성해보세요"
+            value={input.content}
+            onChange={onChangeInput}
+          />
+        </div>
+      </section>
+      <section>
+        <div className="control_box">
+          <MyButton text={"취소하기"} onClick={() => navigate(-1)} />
+          <MyButton
+            text={"작성 완료"}
+            type={"positive"}
+            onClick={onClickSubmitButton}
+          />
+        </div>
+      </section>
     </div>
   );
 };

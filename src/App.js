@@ -1,7 +1,7 @@
-import React, { useContext, useReducer, useRef } from "react";
+import React, { useReducer, useRef, useEffect, useState } from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import "./App.css";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import Home from "./pages/Home";
 import Edit from "./pages/Edit";
@@ -15,79 +15,78 @@ const reducer = (state, action) => {
       return action.data;
     }
     case "CREATE": {
-      newState = [...action.data, ...state];
+      newState = [action.data, ...state];
       break;
     }
     case "REMOVE": {
-      newState = state.filter((it) => it.id !== action.targetId);
+      newState = state.filter(
+        (it) => Number(it.id) !== Number(action.targetId)
+      );
+      console.log("id", action.targetId);
       break;
       //타겟아이디는 어디로 주나? ->인자로 주겠지.
     }
     case "EDIT": {
       newState = state.map((it) =>
-        it.id === action.data.id ? { ...action.data } : it
+        String(it.id) === String(action.data.id) ? action.data : it
       );
       break;
     }
     default:
       return state;
   }
-
+  localStorage.setItem("diary", JSON.stringify(newState));
   return newState;
 };
 
 export const DiaryStateContext = React.createContext();
 export const DiaryDispatchContext = React.createContext();
 
-const dummyData = [
-  {
-    id: 1,
-    emotion: 1,
-    content: "오늘의 일기 1번",
-    date: 1675868679631,
-  },
-  {
-    id: 2,
-    emotion: 2,
-    content: "오늘의 일기 2번",
-    date: 1675868679632,
-  },
-  {
-    id: 3,
-    emotion: 3,
-    content: "오늘의 일기 3번",
-    date: 1675868679633,
-  },
-  {
-    id: 4,
-    emotion: 4,
-    content: "오늘의 일기 4번",
-    date: 1675868679634,
-  },
-  {
-    id: 5,
-    emotion: 5,
-    content: "오늘의 일기 5번",
-    date: 1675868679635,
-  },
-];
-
 function App() {
-  const [data, dispatch] = useReducer(reducer, dummyData);
+  const [data, dispatch] = useReducer(reducer, []);
+  const [isLoading, setIsLoading] = useState(true);
+  const dataId = useRef(0);
 
-  console.log(new Date().getTime());
-  const dataId = useRef(6);
+  useEffect(() => {
+    const storedData = localStorage.getItem("diary");
+
+    if (!storedData) {
+      setIsLoading(false);
+      return;
+    }
+
+    const parsedData = JSON.parse(storedData);
+    if (!Array.isArray(parsedData)) {
+      setIsLoading(false);
+      return;
+    }
+
+    let maxId = 0;
+    parsedData.forEach((item) => {
+      if (Number(item.id) > maxId) {
+        maxId = Number(item.id);
+      }
+    });
+
+    dataId.current = maxId + 1;
+
+    dispatch({
+      type: "INIT",
+      data: parsedData,
+    });
+    setIsLoading(false);
+  }, []);
+
   const onCreate = (date, content, emotion) => {
     dispatch({
       type: "CREATE",
       data: {
-        id: dataId.currrent,
+        id: dataId.current++,
         date: new Date(date).getTime(),
-        content,
         emotion,
+        content,
       },
     });
-    dataId.current += 1;
   };
   const onRemove = (targetId) => {
     dispatch({ type: "REMOVE", targetId });
@@ -98,11 +97,15 @@ function App() {
       data: {
         id: targetId,
         date: new Date(date).getTime(),
-        content,
         emotion,
+        content,
       },
     });
   };
+
+  if (isLoading) {
+    return <div>로딩중...</div>;
+  }
   return (
     <DiaryStateContext.Provider value={data}>
       <DiaryDispatchContext.Provider
