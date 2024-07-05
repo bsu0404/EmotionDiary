@@ -1,11 +1,11 @@
-@import url("https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&family=Yeon+Sung&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Dongle&display=swap");
 
 body {
   background-color: #f6f6f6;
   display: flex;
   justify-content: center; /*가로축 가운데*/
   align-items: center; /*세로축 가운데*/
-  font-family: "Nanum Pen Script";
+  font-family: "Dongle";
   min-height: 100vh; /*최소 높이: 화면의 100%를 가짐*/
   margin: 0px;
 }
@@ -46,7 +46,7 @@ body {
 
   white-space: nowrap;
   /* 버튼 안 글자가 잘려서 두줄이 되지 않도록해주는 속성 */
-  font-family: "Nanum Pen Script";
+  font-family: "Dongle";
   /* 왜 버튼안에는 폰트가 적용이 안되나? */
 }
 
@@ -89,7 +89,7 @@ header .head_btn_right {
   justify-content: end;
 }
 header button {
-  font-family: "Nanum Pen Script";
+  font-family: "Dongle";
 }
 
 /*Diary List*/
@@ -120,7 +120,7 @@ header button {
   padding: 10px 20px;
 
   cursor: pointer;
-  font-family: "Nanum Pen Script";
+  font-family: "Dongle";
   font-size: 18px;
 }
 /* DiaryItem */
@@ -198,7 +198,7 @@ header button {
   padding: 10px 20px;
 
   cursor: pointer;
-  font-family: "Nanum Pen Script";
+  font-family: "Dongle";
   font-size: 20px;
 }
 .DiaryEditor .emotion_list_wrapper {
@@ -208,7 +208,7 @@ header button {
 }
 
 .DiaryEditor textarea {
-  font-family: "Nanum Pen Script";
+  font-family: "Dongle";
   font-size: 20px;
 
   box-sizing: border-box;
