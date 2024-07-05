@@ -34,7 +34,7 @@ const Edit = () => {
   return (
     <div>
       <MyHeader
-        headText={"새 일기 쓰기"}
+        headText={"일기 수정하기"}
         leftChild={
           <MyButton
             text={"< 뒤로 가기"}
