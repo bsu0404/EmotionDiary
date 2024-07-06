@@ -87,7 +87,7 @@ function App() {
       },
     });
   };
-  const OnDelete = (targetId) => {
+  const onDelete = (targetId) => {
     dispatch({ type: "REMOVE", targetId });
   };
   const onUpdate = (targetId, date, content, emotion) => {
@@ -111,7 +111,7 @@ function App() {
         value={{
           onCreate,
           onUpdate,
-          OnDelete,
+          onDelete,
         }}
       >
         <BrowserRouter>
